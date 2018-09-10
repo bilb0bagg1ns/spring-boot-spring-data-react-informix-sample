@@ -30,8 +30,8 @@ class BusinessEntities extends Component {
 	
 	/*
 	    Submit button function.      
-	    Retreives data from a public URL based on 
-	     'all' is passed via input box, then retrievse all ToDos.
+	    Retrieves data from a public URL based on 
+	     'all' is passed via input box, then retrieves all ToDos.
 	     'id' a value is passed, then retrieves just that ToDo for that ID
 	  */
 	  fetchBusinessEntity(event) {
@@ -84,74 +84,14 @@ class BusinessEntities extends Component {
                             </div>
                         </center>
                     </div>
-                        {/* if more then 1 todo, display in table format. else display just one todo */}
-                        <h2> Entitities List </h2>
-                        {  businessEntitiesLength > 1  ? ( // if more then 1 business entity to display in table format
-                			  <BusinessEntitiesList businessEntities={this.state.businessEntities}/>
-                        ) : (  // else display the 1 todo
-                                <OneToDo todo={this.state.todos}/>
-                            )
-                       }
+                        {/* display found entity(ies) in tabular format.*/}
+                        <h2> Entities List </h2>
+           			    <BusinessEntitiesList businessEntities={this.state.businessEntities}/>
+                        
                 </section>
             );    	
     };
         
-}
-
-/* Couldn't figure out a way to modify ToDoList to list out when only one ID is being searched */
-class OneToDo extends React.Component { 
-     render () {
-         return(
-             <table id ="todos">
-                 <tbody>
-                     <tr>
-                         <th>UserId</th>
-                         <th>Id</th>
-                         <th>Title</th>
-                         <th>Completed</th>
-                     </tr>
-                      <ToDo key={this.props.entity} todo={this.props.todo} />
-                 </tbody>
-             </table>            
-         )            
-     }
- }
-
-/* prints the table columns and rows */
-class ToDoList extends React.Component { 
-     render () {                               
-         var todos = this.props.todos.map (
-            todo => <ToDo key={todo.entity} todo={todo} />
-         );           
-         return(
-             <table id ="todos">
-                 <tbody>
-                     <tr>
-                         <th>UserId</th>
-                         <th>Id</th>
-                         <th>Title</th>
-                         <th>Completed</th>
-                     </tr>
-                    {todos}
-                 </tbody>
-             </table>            
-         )            
-     }
- }
-
-/* prints the table rows */
-class ToDo extends React.Component {
-  render() {
-        var todo = this.props.todo
-      return (
-       <tr>
-           <td>{todo.userId}</td>
-           <td>{todo.entity}</td>
-           <td>{todo.title}</td>
-           <td>{String(todo.completed)}</td>
-			</tr>           
-      )  
-  }     
 }
 
 class BusinessEntitiesList extends React.Component{
@@ -175,14 +115,19 @@ class BusinessEntitiesList extends React.Component{
 	}
 }
 
+/*
+ * This is called by BusinessEntitiesList for rendering each business entity
+ */
 class BusinessEntity extends React.Component{
 	render() {
+		var businessEntity = this.props.businessEntity
+
 		return (
 			<tr>
-			<td>{this.props.businessEntity.entityId}</td>
-			<td>{this.props.businessEntity.entityName}</td>
-			<td>{this.props.businessEntity.entityType}</td>
-			<td>{this.props.businessEntity.entityStatusCd}</td>
+			<td>{businessEntity.entityId}</td>
+			<td>{businessEntity.entityName}</td>
+			<td>{businessEntity.entityType}</td>
+			<td>{businessEntity.entityStatusCd}</td>
 			</tr>
 		)
 	}

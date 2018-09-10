@@ -1,6 +1,5 @@
 'use strict';
 
-import Table from './Table';
 import ToDos from './todos';
 import BusinessEntities from './business-entities';
 
@@ -27,6 +26,7 @@ class App extends React.Component {
 		this.state = {businessEntities: []};
 	}
 
+/*	
 	componentDidMount() {
 //		client({method: 'GET', path: '/api/businessEntities/19981215793'}).done(response => {
 		
@@ -35,11 +35,9 @@ class App extends React.Component {
 			this.setState({businessEntities: response.entity._embedded.businessEntities});
 		});		
 	}
-
+*/
 	/*
-			  <ToDos />
-			  <Table />		
-			  <BusinessEntitiesList businessEntities={this.state.businessEntities}/>
+	  <ToDos />
 	 */
 	render() {
 		return (
@@ -51,43 +49,6 @@ class App extends React.Component {
 }
 //end::app[]
 
-//tag::businessEntities-list[]
-class BusinessEntitiesList extends React.Component{
-	render() {
-		var businessEntities = this.props.businessEntities.map(businessEntity =>
-			<BusinessEntity key={businessEntity._links.self.href} businessEntity={businessEntity}/>
-		);
-		return (	
-			<table id="busentities">
-				<tbody>
-					<tr>
-					<th>Entity Id</th>
-					<th>Entity Name</th>
-					<th>Entity Type</th>
-					<th>Entity Status Code</th>
-					</tr>
-					{businessEntities}
-				</tbody>
-			</table>
-		)
-	}
-}
-// end::businessEntities-list[]
-
-// tag::businessEntity[]
-class BusinessEntity extends React.Component{
-	render() {
-		return (
-			<tr>
-			<td>{this.props.businessEntity.entityId}</td>
-			<td>{this.props.businessEntity.entityName}</td>
-			<td>{this.props.businessEntity.entityType}</td>
-			<td>{this.props.businessEntity.entityStatusCd}</td>
-			</tr>
-		)
-	}
-}
-// end::businessEntity[]
 
 // tag::render[]
 ReactDOM.render(
