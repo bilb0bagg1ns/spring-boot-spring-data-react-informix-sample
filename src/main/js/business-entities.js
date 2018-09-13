@@ -11,7 +11,7 @@ class BusinessEntities extends Component {
 	constructor(props) {
         super(props);
         this.state = {
-            colorForBox: "green",
+            colorForBox: "lightskyBlue",
             entity: "",
             todos: [],
             businessEntities: []
@@ -20,7 +20,8 @@ class BusinessEntities extends Component {
         this.fetchBusinessEntity= this.fetchBusinessEntity.bind(this);
         this.entity=this.entity.bind(this);
     }
-      
+	
+     
     // function for input box onChange in Box
 	entity(event) {
         this.setState({
@@ -28,7 +29,8 @@ class BusinessEntities extends Component {
         });
     }	
 	
-	/*
+	    
+	 /*
 	    Submit button function.      
 	    Retrieves data from a public URL based on 
 	     'all' is passed via input box, then retrieves all ToDos.
@@ -36,19 +38,25 @@ class BusinessEntities extends Component {
 	  */
 	  fetchBusinessEntity(event) {
 	    console.log("---- start fetchBusinessEntity");
-		  console.log(this.state);
+		console.log(this.state);
 		
-		  var urlStr = "/api/businessEntities/search/findByPartialEntityName?entityName=";
-		  if (this.state.entity !=="all"){ // is "all" passed then get all todos, else get just the passed one
+		// reset the state if its already populated from prior fetch
+		// this will cause, if displayed, the Entities List table to be unrendered
+		this.setState({businessEntities: []});
+		
+		var urlStr = "/api/businessEntities/search/findByPartialEntityName?entityName=";
+		if (this.state.entity !=="all"){ // is "all" passed then get all todos, else get just the passed one
 		          urlStr = urlStr+this.state.entity;
-	      } 
-			client({method: 'GET', path: urlStr})
-			   .done(response => {
-				this.setState({businessEntities: response.entity._embedded.businessEntities});
-			});
+	     }
+
+		// invoke service
+		client({method: 'GET', path: urlStr})
+		   .done(response => {
+			this.setState({businessEntities: response.entity._embedded.businessEntities});
+		});
 		  
-			console.log("---- end fetchBusinessEntity");            
-		  }
+		console.log("---- end fetchBusinessEntity");            
+	  }
 	  
 	
 	  render() {
@@ -59,40 +67,54 @@ class BusinessEntities extends Component {
 	            fontSize: 12
 	        };		  
         return (
-                <section id="rest-section">
-                    <div id="rest-section-div" style={styleObj}>                    
-                        {/* Input Box */}
-                        <div class="form-group">
-                            <label for="entity-label">
-                                Enter entity to retrieve and press Submit:
-                            </label>
-                            <input
-                                id="entity-input"
-                                value={this.state.entity}
-                                onChange={this.entity}
-                            />
-                        </div>
-                        {/* Submit Button */}
-                        <center>
-                            <div>
-                                <button
-                                    id="botton-for-Box"
-                                    onClick={this.fetchBusinessEntity} >
-                                    {" "}
-                                    Submit{" "}
-                                </button>
-                            </div>
-                        </center>
-                    </div>
-                        {/* display found entity(ies) in tabular format.*/}
-                        <h2> Entities List </h2>
-           			    <BusinessEntitiesList businessEntities={this.state.businessEntities}/>
-                        
-                </section>
-            );    	
+        		<div id="parent">
+        	   	<h1 id="heading">Name Search Availability</h1> 
+             <section id="rest-section">
+                 <div id="rest-section-div" style={styleObj}>                    
+                     {/* Input Box */}
+                     <div class="form-group">
+                         <label for="entity-label">
+                             Enter entity to retrieve and submit:
+                         </label>
+                         <input
+                             id="entity-input"
+                             value={this.state.entity}
+                             onChange={this.entity}
+                         />
+                     </div>
+                     <div className="form-group">
+                       <label htmlFor="name">Your full name *</label>
+                       <input className="form-control" name="name" ref="name" required type="text" />
+                       </div>
+                     {/* Submit Button */}
+                     <center>
+                         <div>
+                             <button
+                                 id="botton-for-Box"
+                                 onClick={this.fetchBusinessEntity} >
+                                 {" "}
+                                 Search {" "}
+                             </button>
+                         </div>
+                     </center>
+                 </div>
+                     {/* display found entity(ies) in tabular format.*/
+                      /* display only if businessEntities list has at least 1 value */
+                     }
+                     { this.state && this.state.businessEntities.length>=1 &&
+                        <div>
+                          <h2> Entities List </h2>
+         			        <BusinessEntitiesList businessEntities={this.state.businessEntities}/>
+         			     </div>
+                     }
+             </section>
+           </div>
+        );    	
     };
-        
+
+    
 }
+
 
 class BusinessEntitiesList extends React.Component{
 	render() {

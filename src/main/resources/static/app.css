@@ -1,7 +1,50 @@
 @charset "ISO-8859-1";
+
+html, body, h1 {
+  display: flex;
+  justify-content: center;
+    font-family: "Trebuchet MS", Arial, Helvetica, sans-serif;
+  
+}
+
+label {
+    font-family: "Trebuchet MS", Arial, Helvetica, sans-serif;
+    font-size: 22px;
+    height: 20px;
+    width: 200px;
+    margin-top: 10px;
+    margin-left: 10px;
+    text-align: right;
+    margin-right:15px;
+}
+input {
+    font-family: "Trebuchet MS", Arial, Helvetica, sans-serif;
+    font-size: 14px;  
+    height: 20px;
+    width: 250px;
+    border: 1px solid #000;
+    margin-top: 10px;
+}
+
+button {
+    font-family: "Trebuchet MS", Arial, Helvetica, sans-serif;
+    font-size: 14px;  
+    font-weight: bold;
+    border: 1px solid #000;
+    margin-top: 10px;  
+}
+
+
+div {
+    padding-bottom: 10px;
+}
+
+
+
 td, th {
     border: 1px solid #ddd;
     padding: 8px;
+    font-size: 14px;    
 }
 
 tr:nth-child(even){background-color: #f2f2f2;}
@@ -12,9 +55,10 @@ th {
     padding-top: 12px;
     padding-bottom: 12px;
     text-align: left;
-    background-color: #4CAF50;
-    color: white;
-}
+    background-color: lightskyblue;
+/*    background-color: #4CAF50; */
+    color: #1f22a0;
+   }
 
 
 #busentities {
@@ -36,6 +80,7 @@ th {
     padding-top: 12px;
     padding-bottom: 12px;
     text-align: left;
-    background-color: #4CAF50;
-    color: white;
+    background-color: lightskyblue;
+/*    background-color: #4CAF50; */
+    color: #1f22a0;
 }
