@@ -78,19 +78,6 @@ class BusinessEntities extends Component {
        
    		}
 
-/*   		
-   		var urlStr = "/api/businessEntities/search/findByPartialEntityName?entityName=";
-   		if (this.state.entity !=="all"){ // is "all" passed then get all todos, else get just the passed one
-   		          urlStr = urlStr+this.state.entity;
-   	     }
-   		
-   		// invoke service
-   		client({method: 'GET', path: urlStr})
-   		   .done(response => {
-   			this.setState({businessEntities: response.entity._embedded.businessEntities});
-	 	});
-		
-*/
    		
 		console.log("---- end fetchBusinessEntity");            
 	  }
@@ -153,31 +140,11 @@ class BusinessEntities extends Component {
                          </div>
                      </center>
                  </div>
-                     {/* display found entity(ies) in tabular format.*/
-                      /* display only if businessEntities list has at least 1 value 
-                       * 
-                       * this.state && this.state.businessEntities.length>=1 &&
-                       * 
-                       * <BusinessEntitiesList businessEntities={this.state.businessEntities}/>
-                    <OneBusinessEntity oneBusinessEntity={this.state.businessEntities}/>
-
-                       * */
-                     }
                      {businessEntityForRender}
              </section>
            </div>
         );    	
     };
-
-    /* Works for single business entity
-      { this.state && this.state.businessEntities.entity &&
-        <div>
-          <h2> Entities List </h2>
-          <OneBusinessEntity oneBusinessEntity={this.state.businessEntities}/>
-        </div>
-       }
-     */
-    
 }
 
 
@@ -231,6 +198,7 @@ class OneBusinessEntity extends React.Component {
                     <th>Entity Type</th>
                     <th>Entity Status Code</th>
                   </tr>
+                   /* oneBusinessEntity.entity, because that is where the data is stored */
                    <BusinessEntity key={this.props.entityId} businessEntity={this.props.oneBusinessEntity.entity} />
               </tbody>
           </table>            
