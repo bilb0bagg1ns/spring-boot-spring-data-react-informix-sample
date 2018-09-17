@@ -13,33 +13,44 @@ class BusinessEntities extends Component {
         this.state = {
             colorForBox: "lightskyBlue",
             entity: "",
+            entityNameInputBoxDisabled: false,
             entityId: "",
+            entityIdInputBoxDisabled: false,            
             todos: [],
             businessEntities: []
         };
 
-        this.fetchBusinessEntity= this.fetchBusinessEntity.bind(this);
+        // bind all event handlers (JavaScript requirement)
         this.entity=this.entity.bind(this);
         this.entityId=this.entityId.bind(this);
+        this.entityNameInputBoxClicked=this.entityNameInputBoxClicked.bind(this);
+        this.entityIdInputBoxClicked=this.entityIdInputBoxClicked.bind(this);
+        this.fetchBusinessEntity= this.fetchBusinessEntity.bind(this);
+        
     }
 	
      
-    // function for input box onChange in Box
-	  entity(event) {
-        this.setState({
-        	entity: event.target.value
-        });
-    }	
+   // function for input box onChange in Box
+	  entity(event) { this.setState({entity: event.target.value}); }	
 
 	  
-   entityId(event) {
-     this.setState({
-      entityId: event.target.value
-     });
-   } 
+   entityId(event) { this.setState({entityId: event.target.value}); } 
+
+   /* entity name input box engaged , disable other box */
+   entityNameInputBoxClicked(event) {
+     this.setState({entityId : '' }); // blank out value in entity id box
+     this.setState({entityIdInputBoxDisabled: true }); // disable the entity id box
+    } 
+   
+   
+   /* entity id input box engaged, disable other box */
+   entityIdInputBoxClicked(event) {
+     this.setState({entity : '' }); // blank out value in entity name box     
+     this.setState({entityNameInputBoxDisabled: true }); // disable the entity name box
+    } 
 
 	    
-	 /*
+	  /*
 	    Submit button function.      
 	    Retrieves data from a REST call based on what is passed in the input box 
 	     entity name is passed via input box, then retrieves all ToDos.
@@ -64,7 +75,10 @@ class BusinessEntities extends Component {
           .done(response => {
           this.setState({businessEntities: response.entity._embedded.businessEntities});
        });
-       
+
+       // let's reset entityNameInputBoxDisabled to active
+       this.setState({ entityIdInputBoxDisabled: false });
+
        
    		} else if (this.state.entityId){ // searching by entity id
        urlStr = "/api/businessEntities/";
@@ -75,11 +89,11 @@ class BusinessEntities extends Component {
           .done(response => {
           this.setState({businessEntities: response});
        });
-       
+      
+       // let's reset entityNameInputBoxDisabled to active
+       this.setState({ entityNameInputBoxDisabled: false });
    		}
-
-   		
-		console.log("---- end fetchBusinessEntity");            
+		   console.log("---- end fetchBusinessEntity");            
 	  }
 	  
 	
@@ -118,6 +132,9 @@ class BusinessEntities extends Component {
                              id="entity-input"
                              value={this.state.entity}
                              onChange={this.entity}
+                             disabled = {this.state.entityNameInputBoxDisabled}
+                             onClick = {this.entityNameInputBoxClicked}
+
                          />
                      </div>
                      <div className="form-group">
@@ -126,6 +143,8 @@ class BusinessEntities extends Component {
                          id="entityId-input"
                          value={this.state.entityId}
                          onChange={this.entityId}
+                       disabled = {this.state.entityIdInputBoxDisabled}
+                       onClick = {this.entityIdInputBoxClicked}
                          />
                        </div>
                      {/* Submit Button */}
@@ -187,6 +206,7 @@ class BusinessEntity extends React.Component{
 	}
 }
 
+/* oneBusinessEntity.entity, because that is where the data is stored */
 class OneBusinessEntity extends React.Component { 
   render () {
       return(
@@ -198,7 +218,6 @@ class OneBusinessEntity extends React.Component {
                     <th>Entity Type</th>
                     <th>Entity Status Code</th>
                   </tr>
-                   /* oneBusinessEntity.entity, because that is where the data is stored */
                    <BusinessEntity key={this.props.entityId} businessEntity={this.props.oneBusinessEntity.entity} />
               </tbody>
           </table>            
