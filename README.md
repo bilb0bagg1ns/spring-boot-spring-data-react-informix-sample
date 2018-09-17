@@ -50,6 +50,15 @@ Run "npm run-script watch" to put webpack into watch mode. It will regenerate bu
    - Note this will first render a table column headers but takes a while to retrieve the data as it is searching for entityName 'Hope', which is an expensive lookup by name
 
 ### To test the APIs:
+
+GET - http://localhost:8080/api/
+GET - http://localhost:8080/api/businessEntities
+GET - http://localhost:8080/api/businessEntities/19981196785
+GET - http://localhost:8080/api/businessEntities/search/findByPartialEntityName?entityName=Hope
+GET - http://localhost:8080/api/businessEntities/search/findByPartialEntityName?entityName=New Hope Community Church of Golden
+
+
+
 1. http://localhost:8080/api/businessEntities/19981215793
 
 Returns:

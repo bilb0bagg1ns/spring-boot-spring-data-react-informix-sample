@@ -13,48 +13,85 @@ class BusinessEntities extends Component {
         this.state = {
             colorForBox: "lightskyBlue",
             entity: "",
+            entityId: "",
             todos: [],
             businessEntities: []
         };
 
         this.fetchBusinessEntity= this.fetchBusinessEntity.bind(this);
         this.entity=this.entity.bind(this);
+        this.entityId=this.entityId.bind(this);
     }
 	
      
     // function for input box onChange in Box
-	entity(event) {
+	  entity(event) {
         this.setState({
         	entity: event.target.value
         });
     }	
-	
+
+	  
+   entityId(event) {
+     this.setState({
+      entityId: event.target.value
+     });
+   } 
+
 	    
 	 /*
 	    Submit button function.      
-	    Retrieves data from a public URL based on 
-	     'all' is passed via input box, then retrieves all ToDos.
-	     'id' a value is passed, then retrieves just that ToDo for that ID
+	    Retrieves data from a REST call based on what is passed in the input box 
+	     entity name is passed via input box, then retrieves all ToDos.
+	     'id' a value is passed, then retrieves just that entity by that ID
 	  */
 	  fetchBusinessEntity(event) {
 	    console.log("---- start fetchBusinessEntity");
-		console.log(this.state);
-		
-		// reset the state if its already populated from prior fetch
-		// this will cause, if displayed, the Entities List table to be unrendered
-		this.setState({businessEntities: []});
-		
-		var urlStr = "/api/businessEntities/search/findByPartialEntityName?entityName=";
-		if (this.state.entity !=="all"){ // is "all" passed then get all todos, else get just the passed one
-		          urlStr = urlStr+this.state.entity;
-	     }
+   		console.log(this.state);
+   		
+   		// reset the state if its already populated from prior fetch
+   		// this will cause, if displayed, the Entities List table to be unrendered
+   		this.setState({businessEntities: []});
+   		
+   		
+   		var urlStr;
+   		if (this.state.entity) { // searching by a entity name
+       urlStr = "/api/businessEntities/search/findByPartialEntityName?entityName=";
+       urlStr = urlStr+this.state.entity;
+       
+       // invoke service
+       client({method: 'GET', path: urlStr})
+          .done(response => {
+          this.setState({businessEntities: response.entity._embedded.businessEntities});
+       });
+       
+       
+   		} else if (this.state.entityId){ // searching by entity id
+       urlStr = "/api/businessEntities/";
+       urlStr = urlStr + this.state.entityId;
 
-		// invoke service
-		client({method: 'GET', path: urlStr})
-		   .done(response => {
-			this.setState({businessEntities: response.entity._embedded.businessEntities});
-		});
-		  
+       // invoke service
+       client({method: 'GET', path: urlStr})
+          .done(response => {
+          this.setState({businessEntities: response});
+       });
+       
+   		}
+
+/*   		
+   		var urlStr = "/api/businessEntities/search/findByPartialEntityName?entityName=";
+   		if (this.state.entity !=="all"){ // is "all" passed then get all todos, else get just the passed one
+   		          urlStr = urlStr+this.state.entity;
+   	     }
+   		
+   		// invoke service
+   		client({method: 'GET', path: urlStr})
+   		   .done(response => {
+   			this.setState({businessEntities: response.entity._embedded.businessEntities});
+	 	});
+		
+*/
+   		
 		console.log("---- end fetchBusinessEntity");            
 	  }
 	  
@@ -66,6 +103,20 @@ class BusinessEntities extends Component {
 	            backgroundColor: this.state.colorForBox,
 	            fontSize: 12
 	        };		  
+	        
+	        /* Conditional rendering - https://reactjs.org/docs/conditional-rendering.html 
+	         * Render when we have a list of business entities (list length is >= 1)
+	         * or 
+	         * when there is just one business entity (value is stored in businessEntities.entity)
+	         */	        
+	        let businessEntityForRender;
+         if (this.state && this.state.businessEntities.length>=1) { // rendering list of business entities     
+           businessEntityForRender = <BusinessEntitiesList businessEntities={this.state.businessEntities}/>
+         } else if (this.state && this.state.businessEntities.entity) { // rendering single business entity
+           /*  when searching for a business entity by id, returned values get mapped into businessEntities.entity */
+           businessEntityForRender = <OneBusinessEntity oneBusinessEntity={this.state.businessEntities}/>           
+         }
+	        
         return (
         		<div id="parent">
         	   	<h1 id="heading">Name Search Availability</h1> 
@@ -74,7 +125,7 @@ class BusinessEntities extends Component {
                      {/* Input Box */}
                      <div class="form-group">
                          <label for="entity-label">
-                             Enter entity to retrieve and submit:
+                             Enter entity name
                          </label>
                          <input
                              id="entity-input"
@@ -83,8 +134,12 @@ class BusinessEntities extends Component {
                          />
                      </div>
                      <div className="form-group">
-                       <label htmlFor="name">Your full name *</label>
-                       <input className="form-control" name="name" ref="name" required type="text" />
+                       <label htmlFor="name">Enter entity id </label>
+                       <input 
+                         id="entityId-input"
+                         value={this.state.entityId}
+                         onChange={this.entityId}
+                         />
                        </div>
                      {/* Submit Button */}
                      <center>
@@ -99,19 +154,29 @@ class BusinessEntities extends Component {
                      </center>
                  </div>
                      {/* display found entity(ies) in tabular format.*/
-                      /* display only if businessEntities list has at least 1 value */
+                      /* display only if businessEntities list has at least 1 value 
+                       * 
+                       * this.state && this.state.businessEntities.length>=1 &&
+                       * 
+                       * <BusinessEntitiesList businessEntities={this.state.businessEntities}/>
+                    <OneBusinessEntity oneBusinessEntity={this.state.businessEntities}/>
+
+                       * */
                      }
-                     { this.state && this.state.businessEntities.length>=1 &&
-                        <div>
-                          <h2> Entities List </h2>
-         			        <BusinessEntitiesList businessEntities={this.state.businessEntities}/>
-         			     </div>
-                     }
+                     {businessEntityForRender}
              </section>
            </div>
         );    	
     };
 
+    /* Works for single business entity
+      { this.state && this.state.businessEntities.entity &&
+        <div>
+          <h2> Entities List </h2>
+          <OneBusinessEntity oneBusinessEntity={this.state.businessEntities}/>
+        </div>
+       }
+     */
     
 }
 
@@ -154,5 +219,24 @@ class BusinessEntity extends React.Component{
 		)
 	}
 }
+
+class OneBusinessEntity extends React.Component { 
+  render () {
+      return(
+          <table id ="businessentity">
+              <tbody>
+                  <tr>
+                    <th>Entity Id</th>
+                    <th>Entity Name</th>
+                    <th>Entity Type</th>
+                    <th>Entity Status Code</th>
+                  </tr>
+                   <BusinessEntity key={this.props.entityId} businessEntity={this.props.oneBusinessEntity.entity} />
+              </tbody>
+          </table>            
+      )            
+  }
+}
+
 
 export default BusinessEntities;
