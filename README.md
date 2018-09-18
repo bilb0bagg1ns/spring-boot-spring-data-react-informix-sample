@@ -39,6 +39,9 @@ React:
 ## STS 
 1. With the pom.xml containing a plugin to install node and npm, noticed occasionally, I'd have to do a Project -> Clean to get app to start properly.
 
+## Design Details
+
+1. Repository class extends JpaRepository extends PagingAndSortingRepository extends CrudRepository
 
 ## Exercising the Code:
 
@@ -53,7 +56,10 @@ Run "npm run-script watch" to put webpack into watch mode. It will regenerate bu
 
 GET - http://localhost:8080/api/
 GET - http://localhost:8080/api/businessEntities  - returns first 20 entities
-GET - http://localhost:8080/api/businessEntities/19981196785
+GET  - http://localhost:8080/api/businessEntities?size=2 - returns just 2 entities now
+GET - http://localhost:8080/api/businessEntities?page=2&size=4 - returns page 2 with 4 entities 
+GET - http://localhost:8080/api/businessEntities/19981196785 - returns entity by id
+
 
 GET - http://localhost:8080/api/businessEntities/search - returns the custom query (findByPartialEntityName{?entityName}) that we wrote in the Repository class
 GET - http://localhost:8080/api/businessEntities/search/findByPartialEntityName?entityName=Hope
