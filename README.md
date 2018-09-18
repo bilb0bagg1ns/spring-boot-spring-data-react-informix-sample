@@ -52,8 +52,10 @@ Run "npm run-script watch" to put webpack into watch mode. It will regenerate bu
 ### To test the APIs:
 
 GET - http://localhost:8080/api/
-GET - http://localhost:8080/api/businessEntities
+GET - http://localhost:8080/api/businessEntities  - returns first 20 entities
 GET - http://localhost:8080/api/businessEntities/19981196785
+
+GET - http://localhost:8080/api/businessEntities/search - returns the custom query (findByPartialEntityName{?entityName}) that we wrote in the Repository class
 GET - http://localhost:8080/api/businessEntities/search/findByPartialEntityName?entityName=Hope
 GET - http://localhost:8080/api/businessEntities/search/findByPartialEntityName?entityName=New Hope Community Church of Golden
 

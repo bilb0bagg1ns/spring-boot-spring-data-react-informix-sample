@@ -1,17 +1,17 @@
 package com.bizapp.sample.controller;
 
-import javax.inject.Inject;
-
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
-
-import com.bizapp.sample.model.service.BusinessEntityRepositoryService;
 
 @Controller
 public class HomeController {
 
+	/*-
 	@Inject
 	private BusinessEntityRepositoryService businessEntityRepositoryService;
+	@Inject
+	private BusinessEntityRepository businessEntityRepository;
+	 */
 
 	@RequestMapping(value = "/")
 	public String index() {
@@ -35,6 +35,15 @@ public class HomeController {
 	
 		// model.addAttribute("name", name);
 		return "index";
+	}
+	*/
+
+	/*- Tried via postman. Got exception about ThymeLeaf Resolver 
+	@GetMapping("/businessEntities/{id}")
+	public BusinessEntity geBusinessEntityById(@PathVariable(value = "id") Long entityId) {
+		System.out.println("--------> Inside HomeController::geBusinessEntityById");
+		return businessEntityRepository.findById(entityId)
+				.orElseThrow(() -> new ResourceNotFoundException("BusinessEntity", "id", entityId));
 	}
 	*/
 }

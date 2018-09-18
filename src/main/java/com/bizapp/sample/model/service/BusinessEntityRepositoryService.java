@@ -20,7 +20,7 @@ public class BusinessEntityRepositoryService {
 	private BusinessEntityRepository businessEntityRepository;
 
 	public boolean exists(long entityId) {
-		return businessEntityRepository.exists(entityId);
+		return businessEntityRepository.existsById(entityId);
 	}
 
 	/*-
