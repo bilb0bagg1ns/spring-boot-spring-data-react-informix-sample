@@ -21,8 +21,8 @@ class BusinessEntities extends Component {
         };
 
         // bind all event handlers (JavaScript requirement)
-        this.entity=this.entity.bind(this);
-        this.entityId=this.entityId.bind(this);
+        this.entityInputBoxChanged=this.entityInputBoxChanged.bind(this);
+        this.entityIdInputBoxChanged=this.entityIdInputBoxChanged.bind(this);
         this.entityNameInputBoxClicked=this.entityNameInputBoxClicked.bind(this);
         this.entityIdInputBoxClicked=this.entityIdInputBoxClicked.bind(this);
         this.fetchBusinessEntity= this.fetchBusinessEntity.bind(this);
@@ -30,11 +30,10 @@ class BusinessEntities extends Component {
     }
 	
      
-   // function for input box onChange in Box
-	  entity(event) { this.setState({entity: event.target.value}); }	
-
-	  
-   entityId(event) { this.setState({entityId: event.target.value}); } 
+   // event handler for entity name input box onChange
+	  entityInputBoxChanged(event) { this.setState({entity: event.target.value}); }	
+   // event handler for entity id input box onChange	  
+   entityIdInputBoxChanged(event) { this.setState({entityId: event.target.value}); } 
 
    /* entity name input box engaged , disable other box */
    entityNameInputBoxClicked(event) {
@@ -131,7 +130,7 @@ class BusinessEntities extends Component {
                          <input
                              id="entity-input"
                              value={this.state.entity}
-                             onChange={this.entity}
+                             onChange={this.entityInputBoxChanged}
                              disabled = {this.state.entityNameInputBoxDisabled}
                              onClick = {this.entityNameInputBoxClicked}
 
@@ -142,7 +141,7 @@ class BusinessEntities extends Component {
                        <input 
                          id="entityId-input"
                          value={this.state.entityId}
-                         onChange={this.entityId}
+                         onChange={this.entityIdInputBoxChanged}
                        disabled = {this.state.entityIdInputBoxDisabled}
                        onClick = {this.entityIdInputBoxClicked}
                          />
