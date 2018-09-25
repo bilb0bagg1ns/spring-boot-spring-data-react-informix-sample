@@ -84,3 +84,14 @@ th {
 /*    background-color: #4CAF50; */
     color: #1f22a0;
 }
+
+/* pagination navigation */
+#nav {
+    font-family: "Trebuchet MS", Arial, Helvetica, sans-serif;
+    font-weight: bold;
+    border: 1px solid #000;
+    margin-top: 10px;
+    font-size: 25px;  
+    background-color: deepskyblue
+    
+}
