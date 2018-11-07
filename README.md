@@ -1,5 +1,11 @@
 # spring-boot-spring-data-react-informix-sample
 
+1. This app when executed via STS, will run both the SpringBoot server and the React Dev Server.
+
+2. The app is accessed via http://localhost:8080/ and *NOT* via localhost:3000
+
+3. The bundle.js (webpack.congif.js) is located in src/main/resources/static/built/bundle.js
+
 # Demonstrates use of
 
 Spring:
